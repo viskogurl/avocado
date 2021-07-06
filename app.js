@@ -1,16 +1,14 @@
-import koa from 'koa';
+const koa = require('koa');
 const app = new koa();
 
-import koaRouter from 'koa-router';
+const koaRouter = require('koa-router');
 const router = new koaRouter();
 
-import helmet from 'koa-helmet';
-import json from 'koa-json';
-import render from 'koa-ejs';
-import bodyParser from 'koa-bodyparser';
-import * as path from 'path';
-
-const __dirname = path.dirname(new URL(import.meta.url).pathname);
+const helmet = require('koa-helmet');
+const json = require('koa-json');
+const render = require('koa-ejs');
+const bodyParser = require('koa-bodyparser');
+const path = require('path');
 
 
 // Replace with DB
