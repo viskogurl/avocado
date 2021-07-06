@@ -8,7 +8,7 @@ const helmet = require('koa-helmet');
 const json = require('koa-json');
 const render = require('koa-ejs');
 const bodyParser = require('koa-bodyparser');
-const path = require('path');
+const { join } = require('path');
 
 
 // Replace with DB
@@ -57,7 +57,7 @@ async function add(ctx) {
 }
 
 render(app, {
-  root: path.join(__dirname, 'views'),
+  root: join(__dirname, 'views'),
   layout: 'layout',
   viewExt: 'html',
   cache: false,
