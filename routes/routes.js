@@ -1,5 +1,14 @@
+// Koa Router
 const koaRouter = require('@koa/router');
 const router = new koaRouter();
+
+// Koa Body Parser
+const bodyParser = require('koa-bodyparser');
+router.use(bodyParser());
+
+// JSON Prettier Middleware
+const json = require('koa-json');
+router.use(json());
 
 // Replace with DB
 const things = ['My Family', 'Programming', 'Music'];
@@ -29,5 +38,7 @@ async function add(ctx) {
 router.get('/', index);
 router.get('/add', showAdd);
 router.post('/add', add);
+router.get('/test', ctx => ctx.body = { msg: `Hello ${ctx.user}` });
+router.get('/test/:name', ctx => ctx.body = `Hello ${ctx.params.name}`);
 
 module.exports = router;
