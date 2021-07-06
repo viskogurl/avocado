@@ -6,11 +6,15 @@ const json = require('koa-json');
 const render = require('koa-ejs');
 const bodyParser = require('koa-bodyparser');
 const { join } = require('path');
+require('dotenv').config();
 
 const router = require('./routes/routes');
 
+const dbURI = process.env.dbURI;
+const port = process.env.PORT || 3000;
 
 
+console.log(process.env);
 
 // Koa Body Parser
 app.use(bodyParser());
