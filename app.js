@@ -1,18 +1,16 @@
 const koa = require('koa');
 const app = new koa();
 
-const koaRouter = require('koa-router');
-const router = new koaRouter();
-
 const helmet = require('koa-helmet');
 const json = require('koa-json');
 const render = require('koa-ejs');
 const bodyParser = require('koa-bodyparser');
 const { join } = require('path');
 
+const router = require('./routes/routes');
 
-// Replace with DB
-const things = ['My Family', 'Programming', 'Music'];
+
+
 
 // Koa Body Parser
 app.use(bodyParser());
@@ -29,32 +27,7 @@ app.context.user = 'Ian';
 // Simple Middleware Example
 // app.use(async ctx => ctx.body = { msg: 'hello world'});
 
-// List of things
-const index = async (ctx) => {
-  await ctx.render('index', {
-    title: 'Things I Love',
-    things
-  });
-}
 
-// Routes
-router.get('/', index);
-router.get('/add', showAdd);
-router.post('/add', add);
-
-
-
-// Show Add Page
-async function showAdd(ctx) {
-  await ctx.render('add');
-}
-
-// Add thing
-async function add(ctx) {
-  const body = ctx.request.body;
-  things.push(body.thing);
-  ctx.redirect('/');
-}
 
 render(app, {
   root: join(__dirname, 'views'),
