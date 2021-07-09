@@ -26,4 +26,8 @@ async function add(ctx) {
   ctx.redirect('/');
 }
 
-module.exports = { index, showAdd, add };
+async function fib(ctx) {
+  await ctx.render('fib');
+}
+
+module.exports = { index, showAdd, add, fib };

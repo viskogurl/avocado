@@ -74,6 +74,5 @@ process.on('SIGTERM', () => {
 });
 
 process.on('SIGINT', () => {
-  console.log(Server);
   cleanup()
 });
