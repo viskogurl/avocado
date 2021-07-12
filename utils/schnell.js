@@ -1,39 +1,55 @@
 'use strict';
 
-const { tryify } = require('./klar');
+const Todo = require('../models/Todo');
+const { v4: uuidv4 } = require('uuid');
 
 const Schnell = (() => {
-  const cache = {};
+  const memory = [];
 
-  const retrieve = async (query) => {
-    return cache[query] ? cache[query] : await tryify()
+  const snailify = async (promise) => {
+    try {
+      const data = await promise;
+      return [data, null];
+    } catch (error) {
+      return [null, error];
+    }
   }
 
   return {
-    set save(item) {
-      cache[item] = item;
-    },
-
-    get mem() {
-      return cache;
-    },
-
     clean: async () => {
-      for (const item in cache) {
-        delete cache[item];
+      for (const item of memory) {
+        memory.pop();
       }
     },
 
-    save: async (key, value) => {
-      cache[key] = value;
-      return `{ ${key}: ${value} }`;
+    delete: async() => {
+
     },
 
-    cache: async (collectionName, collection) => {
-      for (const item of collection) {
-        cache[collectionName][item.id] = item;
+    all: async () => {
+      return memory[0] ? [memory, null] : await snailify(Todo.find({}));;
+    },
+
+    cache: async (promise) => {
+      const [data, error] = await snailify(promise);
+      for (const item of data) {
+        memory.push(item);
       }
-    }
+      return memory;
+    },
+
+    find: async (query) => {
+      const result = memory.find(({ id }) => id === query);
+      return result ? [result, null] : await snailify(Todo.findOne({ id: query }).exec());
+    },
+
+    save: async (obj) => {
+      const { color, contents } = obj;
+      const [data, error] = await snailify(Todo.create({ todoID: uuidv4(), color, contents }));
+      memory.push(obj);
+      console.log(JSON.stringify(memory).length / 1000 / 1000);
+      return [data, error];
+    },
   };
 })();
 
