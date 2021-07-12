@@ -56,7 +56,7 @@ const client = new MongoClient(dbURI, {
 (async () => {
   const [data, error] = await tryify(client.connect());
   if (error) { throw new Error(error) };
-})()
+})();
 
 const Server = http.createServer(app.callback()).listen(port, () => console.log('Server up and running...'));
 
