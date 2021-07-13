@@ -21,6 +21,7 @@ const klar = {
       const data = await promise;
       return [data, null];
     } catch (error) {
+      console.log(error, `${promise}`);
       return [null, error];
     }
   },
