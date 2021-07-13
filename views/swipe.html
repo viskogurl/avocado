@@ -50,6 +50,8 @@
                 // add first two cards programmatically
                 this.push()
                 this.push()
+                this.push()
+                this.push()
 
                 // handle gestures
                 this.handle()
@@ -72,7 +74,7 @@
 
                     // set default top card position and scale
                     this.topCard.style.transform =
-                        'translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(1)'
+                        'translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(1.6)'
 
                     // destroy previous Hammer instance, if present
                     if (this.hammer) this.hammer.destroy()
@@ -110,13 +112,13 @@
 
                 // apply rotation around Y axis
                 this.topCard.style.transform =
-                    'translateX(-50%) translateY(-50%) rotate(0deg) rotateY(' + rotateY + 'deg) scale(1)'
+                    'translateX(-50%) translateY(-50%) rotate(0deg) rotateY(' + rotateY + 'deg) scale(1.6)'
 
                 // wait for transition end
                 setTimeout(() => {
                     // reset transform properties
                     this.topCard.style.transform =
-                        'translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(1)'
+                        'translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(1.6)'
                 }, 100)
 
             }
@@ -161,11 +163,11 @@
                 let deg = this.isDraggingFrom * dirX * Math.abs(propX) * 45
 
                 // get scale ratio, between .95 and 1
-                let scale = (95 + (5 * Math.abs(propX))) / 100
+                let scale = (155 + (5 * Math.abs(propX))) / 100
 
                 // move and rotate top card
                 this.topCard.style.transform =
-                    'translateX(' + posX + 'px) translateY(' + posY + 'px) rotate(' + deg + 'deg) rotateY(0deg) scale(1)'
+                    'translateX(' + posX + 'px) translateY(' + posY + 'px) rotate(' + deg + 'deg) rotateY(0deg) scale(1.6)'
 
                 // scale up next card
                 if (this.nextCard) this.nextCard.style.transform =
@@ -222,9 +224,9 @@
 
                         // reset cards position and size
                         this.topCard.style.transform =
-                            'translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(1)'
+                            'translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(1.6)'
                         if (this.nextCard) this.nextCard.style.transform =
-                            'translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(0.95)'
+                            'translateX(-50%) translateY(-50%) rotate(0deg) rotateY(0deg) scale(1.5)'
 
                     }
 
