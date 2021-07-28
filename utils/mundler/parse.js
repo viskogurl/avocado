@@ -1,13 +1,14 @@
 'use strict';
 
-const tryify = require('../tryify');
+const { tryify } = require('../klar');
 const replaceAt = require('../replaceAt');
 const fs = require('fs/promises');
 const Path = require('path');
+const opt = process.env.path;
 
 const parse = async (opt) => {
   const mwArr = [];
-  const path = opt || '../../config/config.json';
+  const path = opt || '../../config.json';
 
   const [ data, error ] = await tryify(fs.readFile(Path.join(__dirname, path), 'utf-8'));
   if (error) { throw new Error('parse broke...') };
