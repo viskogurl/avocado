@@ -1,79 +1,52 @@
-// Koa Instantiation
 const Koa = require('koa');
-const app = new Koa();
-
-const http = require('http');
-const helmet = require('koa-helmet');
-const bodyParser = require('koa-bodyparser');
-const json = require('koa-json');
-const render = require('koa-ejs');
-const { join } = require('path');
+const koaBody = require('koa-body');
 const router = require('./routes/routes');
+const helmet = require('koa-helmet');
+const json = require('koa-json');
 const { tryify } = require('./utils/klar');
 const { MongoClient } = require('mongodb');
 const serve = require('koa-static');
 const mount = require('koa-mount');
-const formidable = require('koa2-formidable');
 require('dotenv').config();
+
+const app = new Koa();
 
 const dbURI = process.env.dbURI;
 const port = process.env.PORT || 8080;
 
-// Enable multi-part form uploads
-app.use(bodyParser({ multipart: true }));
-
-// Static files
 app.use(mount('/public', serve('./public')));
 
-// Security Headers Middleware
-app.use(
-  helmet({
-    contentSecurityPolicy: false,
-  })
-);
+app.use(helmet({ contentSecurityPolicy: false, }));
 
-// Koa Body Parser
-app.use(formidable());
-app.use(bodyParser());
-
-// JSON Prettier Middleware
+app.use(koaBody());
+app.use(koaBody({ multipart: true }));
 app.use(json());
 
-// Koa EJS Configuration
-render(app, {
-  root: join(__dirname, 'views'),
-  layout: 'layout',
-  viewExt: 'html',
-  cache: false,
-  debug: false,
-});
+app.use(router.routes()).use(router.allowedMethods());
 
-// Router Middleware
-app.use(router.routes());
-app.use(router.allowedMethods());
+console.log(app.middleware);
 
 /**
  * Database connection function.
  * @param {string} URI - Mongo Atlas URI string.
  * @param {number} PORT - Port number.
  */
-const client = new MongoClient(dbURI, {
-  poolSize: 5,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// const client = new MongoClient(dbURI, {
+//   poolSize: 5,
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
-(async () => {
-  const [data, error] = await tryify(client.connect());
-  if (error) {
-    throw new Error(error);
-  }
-  const collection = client.db('todo-api').collection('todos');
-})();
+// (async () => {
+//   const [data, error] = await tryify(client.connect());
+//   if (error) {
+//     throw new Error(error);
+//   } else {
+//     app.listen(port, () => console.log('Server up and running...'));
+//   }
+// })();
 
-const Server = http
-  .createServer(app.callback())
-  .listen(port, () => console.log('Server up and running...'));
+app.listen(3000, () => { console.log('upp and running on port 3000')});
 
 const cleanup = () => {
   console.log(Server);
