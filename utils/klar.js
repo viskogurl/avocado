@@ -34,17 +34,12 @@ const klar = {
     throw new Error(error);
   },
 
-  /**
-   * Functions that returns the appropriate response statement based on the data or error.
-   * @param {response} res - The express response object.
-   * @param {*} data - The data to be returned to the user if exists.
-   * @param {*} error - The error to be returned to the user if exists.
-   * @returns Returns the correct response to the controllers.
-   */
-  resify: (res, data, error) => {
-    return data
-      ? res.status(200).json({ data })
-      : res.status(404).json({ errors: String(error) });
+  replaceAt: (string, index, replacement, camelize) => {
+    console.log(camelize);
+    if (replacement === '') {
+      return string.slice(0, index) + string.slice(index + 1);
+    }
+    return string.slice(0, index) + replacement + string.slice(index + 1);
   }
 };
 
