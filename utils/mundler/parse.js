@@ -1,12 +1,10 @@
 'use strict';
 
-const { tryify } = require('../klar');
-const replaceAt = require('../replaceAt');
+const { tryify, replaceAt } = require('../klar');
 const fs = require('fs/promises');
 const Path = require('path');
-const opt = process.env.path;
 
-const parse = async (opt) => {
+const parse = async (_app, opt) => {
   const mwArr = [];
   const path = opt || '../../config.json';
 
@@ -18,7 +16,7 @@ const parse = async (opt) => {
   for (const [ key, value ] of Object.entries(rest)) {
 
     let {
-      enabled,
+      opts,
       priority,
       module: {
         name: module_name,
@@ -35,7 +33,7 @@ const parse = async (opt) => {
     }
 
     mwArr.push({
-      enabled,
+      opts,
       priority,
       module_name,
       name,
@@ -47,7 +45,21 @@ const parse = async (opt) => {
     return m1.priority - m2.priority;
   });
 
+  for (const mw of mwArr) {
+    const mod = require(`${mw.module_name}`);
+    if (mw.opts) {
+      _app.use(mod(mw.opts));
+      continue;
+    }
+    _app.use(mod());
+  }
+
   return mwArr;
 }
 
-module.exports = parse;
+const config = async (_app) => {
+  return await parse(_app);
+}
+
+
+module.exports = config;
