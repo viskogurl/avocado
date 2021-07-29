@@ -1,6 +1,6 @@
 'use strict';
 
-const tryify = require('../tryify');
+const { tryify } = require('../klar');
 const parse = require('./parse');
 const install = require('./install');
 const gen = require('./gen');
@@ -16,5 +16,4 @@ const mundler = async () => {
 
 (async () => {
   await mundler();
-  process.exit(0);
 })();
