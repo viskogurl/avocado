@@ -16,12 +16,13 @@ const parse = async (_app, opt) => {
   for (const [ key, value ] of Object.entries(rest)) {
 
     let {
+      noRequire,
       opts,
       priority,
       module: {
         name: module_name,
         name,
-        method
+        methods
       }
     } = value;
 
@@ -33,11 +34,12 @@ const parse = async (_app, opt) => {
     }
 
     mwArr.push({
+      noRequire,
       opts,
       priority,
       module_name,
       name,
-      method
+      methods
     });
   }
 
@@ -46,12 +48,18 @@ const parse = async (_app, opt) => {
   });
 
   for (const mw of mwArr) {
-    const mod = require(`${mw.module_name}`);
-    if (mw.opts) {
+    const mod = !mw.noRequire ? require(`${mw.module_name}`) : mw.module_name;
+    if (mw.methods) {
+      // for (const method of mw.methods) {
+      //   console.log(`${mod}.${method}()`)
+      //   _app.use(Function(`_${mod}.${method}()`));
+      // }
+      continue
+    } else if (mw.opts) {
       _app.use(mod(mw.opts));
-      continue;
+    } else {
+      _app.use(mod());
     }
-    _app.use(mod());
   }
 
   return mwArr;
