@@ -4,12 +4,13 @@ const { tryify } = require('./utils/klar');
 const { MongoClient } = require('mongodb');
 const serve = require('koa-static');
 const mount = require('koa-mount');
+const mundler = require('./utils/mundler/parse');
 require('dotenv').config();
 
 const app = new Koa();
 
 const dbURI = process.env.dbURI;
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 app.use(mount('/public', serve('./public')));
 app.use(router.routes()).use(router.allowedMethods());
@@ -33,8 +34,8 @@ app.use(router.routes()).use(router.allowedMethods());
 //     app.listen(port, () => console.log('Server up and running...'));
 //   }
 // })();
-(async (_app) => {
-  await require('./utils/mundler/parse')(_app);
-  _app.listen(3000, () => { console.log('upp and running on port 3000')});
+(async (_app, _port) => {
+  await mundler(_app);
+  _app.listen(_port, () => { console.log(`Running on port: ${_port}`)});
   console.log(app.middleware);
-})(app);
+})(app, port);
