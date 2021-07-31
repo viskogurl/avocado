@@ -1,0 +1,82 @@
+<style>
+  canvas {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.min.js"></script>
+<script>
+  var numberOfPoints = 1500;
+  var radiusOfSphere = 30;
+  var fibonacciSpherePoints = getFibonacciSpherePoints(
+    numberOfPoints,
+    radiusOfSphere
+  );
+
+  initSceneAndAddFibonacciSphere(fibonacciSpherePoints);
+
+  function getFibonacciSpherePoints(samples, radius, randomize) {
+    // Translated from Python from https://stackoverflow.com/a/26127012
+    samples = samples || 1;
+    radius = radius || 1;
+    randomize = randomize || true;
+    var random = 1;
+    if (randomize === true) {
+      random = Math.random() * samples;
+    }
+
+    var points = [];
+    var offset = 2 / samples;
+    var increment = Math.PI * (3 - Math.sqrt(5));
+
+    for (var i = 0; i < samples; i++) {
+      var y = i * offset - 1 + offset / 2;
+      var distance = Math.sqrt(1 - Math.pow(y, 2));
+      var phi = ((i + random) % samples) * increment;
+      var x = Math.cos(phi) * distance;
+      var z = Math.sin(phi) * distance;
+      x = x * radius;
+      y = y * radius;
+      z = z * radius;
+      var point = {
+        x: x,
+        y: y,
+        z: z,
+      };
+      points.push(point);
+    }
+    return points;
+  }
+
+  function initSceneAndAddFibonacciSphere(fibonacciSpherePoints) {
+    var scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0xffffff, 70, 135);
+    scene.background = new THREE.Color(0xffffff);
+    camera = new THREE.PerspectiveCamera(
+      45,
+      window.innerWidth / window.innerHeight,
+      1,
+      500
+    );
+    camera.position.set(0, 0, 100);
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    for (var i = 0; i < fibonacciSpherePoints.length; i++) {
+      var point = fibonacciSpherePoints[i];
+      var radius = 0.2;
+      var geometry = new THREE.SphereGeometry(radius);
+      var material = new THREE.MeshBasicMaterial({ color: 0x59673c });
+      var sphere = new THREE.Mesh(geometry, material);
+      sphere.position.x = point.x;
+      sphere.position.y = point.y;
+      sphere.position.z = point.z;
+      scene.add(sphere);
+    }
+    renderer.render(scene, camera);
+  }
+</script>
