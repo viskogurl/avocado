@@ -28,7 +28,7 @@ async function add(ctx) {
 }
 
 async function fib(ctx) {
-  await ctx.render('fib');
+  await ctx.status(200);
 }
 
 async function getUpload(ctx) {
