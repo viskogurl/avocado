@@ -1,13 +1,16 @@
 const aws = require("aws-sdk");
 const fs = require("fs");
 
+const accessKey = process.env.ACCESSKEYID
+const secretKey = process.env.SECRETACCESSKEY
+
 const uploadFile = async ({ fileName, filePath, fileType }) => {
   const promise = await new Promise((resolve, reject) => {
     aws.config.update({
       region: "nyc3",
       // You'll need your service's access keys here
-      accessKeyId: "SMHKETACAGMNCOAHFYRC",
-      secretAccessKey: "30LfyksY0lsjLJT2FWYvClNgBEOUHutwFEzgLClNQdU",
+      accessKeyId: accessKey,
+      secretAccessKey: secretKey,
     });
 
     const s3 = new aws.S3({
