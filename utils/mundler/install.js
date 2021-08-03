@@ -1,6 +1,6 @@
 'use strict';
 
-const tryify = require('../tryify');
+const { tryify } = require('../klar');
 const fs = require('fs/promises');
 const { spawn } = require('child_process');
 const Path = require('path');

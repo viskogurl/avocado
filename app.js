@@ -1,3 +1,5 @@
+'use strict';
+
 const Koa = require('koa');
 const router = require('./routes/routes');
 const { tryify } = require('./utils/klar');
@@ -24,7 +26,7 @@ const mundle = async (_app) => {
       // however this is not a guarantee
       ctx.status = err.status || 500;
       ctx.type = 'html';
-      ctx.body = '<p>Something <em>exploded</em>, please contact Maru.</p>';
+      ctx.body = '<p>Server <em>exploded</em>...</p>';
 
       // since we handled this manually we'll
       // want to delegate to the regular app
