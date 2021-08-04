@@ -18,7 +18,7 @@ const port = process.env.PORT || 3000;
 
 // App Middleware Configuration
 const mundle = async (_app) => {
-  app.use(async function (ctx, next) {
+  _app.use(async function (ctx, next) {
     try {
       await next();
     } catch (err) {
@@ -37,7 +37,7 @@ const mundle = async (_app) => {
   });
 
   // error handler
-  app.on('error', function (err) {
+  _app.on('error', function (err) {
     if (process.env.NODE_ENV != 'test') {
       console.log('sent error %s to the cloud', err.message);
       console.log(err);
