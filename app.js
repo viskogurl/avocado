@@ -83,3 +83,6 @@ const client = new MongoClient(dbURI, {
       });
   }
 })(app, port);
+
+// Todo 
+// Replace Mongo with Prisma

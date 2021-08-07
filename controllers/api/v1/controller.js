@@ -1,7 +1,6 @@
 'use strict';
 
 const { uploadFile } = require('../../../coordinators/upload');
-const { createReadStream } = require('fs');
 
 // Replace with DB
 const things = ['My Family', 'Programming', 'Music'];
@@ -27,14 +26,6 @@ async function add(ctx) {
   ctx.redirect('/');
 }
 
-async function fib(ctx) {
-  await ctx.status(200);
-}
-
-async function getUpload(ctx) {
-  await ctx.render('upload');
-}
-
 async function postUpload(ctx) {
   const files = ctx.request.files;
   const file = files[Object.keys(files)[0]];
@@ -46,9 +37,4 @@ async function postUpload(ctx) {
   ctx.body = { key, url };
 }
 
-async function swipe(ctx, next) {
-  ctx.type = 'html';
-  ctx.body = createReadStream('./views/swipe.html');
-}
-
-module.exports = { index, showAdd, add, fib, getUpload, postUpload, swipe };
+module.exports = { index, showAdd, add, postUpload};
