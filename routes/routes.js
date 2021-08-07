@@ -15,6 +15,6 @@ router
   .get('/', index)
   .get('/add', showAdd)
   .post('/add', add)
-  .post('/upload', postUpload)
+  .post('/upload', postUpload);
 
 module.exports = router;
